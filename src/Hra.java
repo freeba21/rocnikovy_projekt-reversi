@@ -35,8 +35,10 @@ public class Hra {
                             System.out.println("Zadal si nespravny tah. Zadaj ho znova:");
                         }
                     }else{
-                        if(invalidmove++<2)
+                        if(invalidmove++<2){
                             System.out.println("\nNevieš zahrať ťah.");
+                            player2=true;
+                        }
                         else {
                             System.out.println("Ani jeden hráč nevie hrať, hra je u konca.");
                          }
@@ -58,6 +60,7 @@ public class Hra {
                     }else {
                         if (invalidmove++ < 2) {
                             System.out.println("\nNevieš zahrať ťah.");
+                            player2=false;
                         } else {
                             System.out.println("Ani jeden hráč nevie hrať, hra je u konca.");
                         }

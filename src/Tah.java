@@ -14,7 +14,7 @@ public class Tah {
     }
 
     public boolean change(){
-        if(riadok<1 || riadok>8 || stlpec<1 || stlpec>8)
+        if(riadok<0 || riadok>7 || stlpec<0 || stlpec>7)
             return false;
         int dole=down();
         int hore=up();
@@ -88,29 +88,23 @@ public class Tah {
     }
     private int up(){
         int u=0;
-        int i=1;
-        while (true){
-            if(riadok==i) break;
-            if(plocha.getbox(riadok-i,stlpec)==hrac.getopponent(hrac) && riadok-i>0){
+        for (int i=riadok-1;i>-1;i--){
+            if(plocha.getbox(i,stlpec)==hrac.getopponent(hrac) && i>0){
                 u++;
-            }else if (plocha.getbox(riadok-i,stlpec)==hrac.getplayer() )
+            }else if (plocha.getbox(i,stlpec)==hrac.getplayer() )
                 break;
             else u=0;
-            i++;
         }
         return u;
     }
     private int down(){
         int d=0;
-        int i=1;
-        while (true){
-            if(riadok+i>7) break;
-            if(plocha.getbox(riadok+i,stlpec)==hrac.getopponent(hrac) && riadok+i<7){
+        for (int i=riadok+1;i<8;i++){
+            if(plocha.getbox(i,stlpec)==hrac.getopponent(hrac) && i<7){
                 d++;
-            }else if (plocha.getbox(riadok+i,stlpec)==hrac.getplayer())
+            }else if (plocha.getbox(i,stlpec)==hrac.getplayer())
                 break;
             else d=0;
-            i++;
         }
         return d;
     }

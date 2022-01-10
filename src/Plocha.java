@@ -51,19 +51,27 @@ public class Plocha {
                     h2++;
             }
         }
+        if(h1+h2!=64){
+            if(h1>h2){
+                h1+=64-h2-h1;
+            }else if(h2>h1)
+                h2+=64-h1-h2;
+        }
         System.out.println("\nFinálne skóre je:");
         System.out.println("Hráč č.1: "+h1+" Hráč č.2: "+h2);
     }
     public int validmoves(Hrac hrac){
         int move=0;
-        for(int r=0;r<row-1;r++){
-            for (int c=0;c<col-1;c++){
+        for(int r=1;r<row;r++){
+            for (int c=1;c<col;c++){
                 if(plocha[r][c]==hrac.getplayer()){
                     for (int i=-1;i<=1;i++){
                         for (int j=-1;j<=1;j++){
+                            if(r+i>0 &&r+i<7&&c+j>0&&c+j<7)
                             if(plocha[r+i][c+j]==hrac.getopponent(hrac)){
-                                for (int k=-1;k<2;k++){
-                                    for (int l=-1;l<2;l++){
+                                for (int k=-1;k<=1;k++){
+                                    for (int l=-1;l<=1;l++){
+                                        if(r+i+k>-1 &&r+i+k<8&&c+j+l>-1&&c+j+l<8)
                                         if(plocha[r+i+k][c+j+l]==0)
                                             move++;
                                     }
