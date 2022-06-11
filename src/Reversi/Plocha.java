@@ -65,13 +65,13 @@ public class Plocha {
             }
         }
     }
-    public void findMove(ArrayList<Integer> list){
+    public void findMove(ArrayList<Integer> list,Hrac hr1, Hrac hr2){
         int change=0,max=0;
         for(int i=0;i<row;i++){
             for (int j=0;j<col;j++){
                 if(bunky[i][j].getCh()=='.'){
                     int nMove[]=new int[1];
-                    move(i,j,change, h1, h2, nMove);
+                    move(i,j,change, hr1, hr2, nMove);
                     if(nMove[0]!=0){
                         list.add(i);
                         list.add(j);
@@ -372,8 +372,40 @@ public class Plocha {
             if(status==-1)
                 return 1;
         }
+        System.out.println("Player1:");
         vypis();
         return 0;
+
+    }
+    public int tah2(int x,int y){
+        int status;
+        int change=0,max=0;
+        int nMove[]=new int[1];
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(bunky[i][j].getCh()==nikto.getH()){
+                    move(i,j,change,h2,h1,nMove);
+                    if(max<nMove[0]){
+                        max=nMove[0];
+                    }
+                }
+            }
+        }
+        user1=max;
+        if(user1==0){
+            user1=-1;
+            return -1;
+        }if(user1!=0){
+            change=1;
+            if(bunky[x][y].getCh()!=nikto.getH())
+                return 1;
+            status=move(x,y,change,h2,h1,nMove);
+            if(status==-1)
+                return 1;
+        }
+        System.out.println("Player2:");
+       vypis();
+        return 2;
 
     }
 

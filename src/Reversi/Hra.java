@@ -68,12 +68,13 @@ public class Hra extends JPanel {
                         policko[k].setIcon(new ImageIcon(img));
                     } catch (IOException e) {
                     }
-                }else if(i==2 &&j==4 || i==3 && j==5 || i==4 && j==2 || i==5 &&j==3){
-                    try {
+                }else if(i == 2 && j == 4 || i == 3 && j == 5 ||
+                        i == 4 && j == 2 || i == 5 && j == 3 ){
+                    try
+                    {
                         Image img = ImageIO.read(getClass().getResource("obrazky/legal.png"));
                         policko[k].setIcon(new ImageIcon(img));
-                    } catch (IOException e) {
-                    }
+                    } catch (IOException ex) {}
                 }
                 policko[k].addActionListener(new Action());
                 board.add(policko[k]);
@@ -121,6 +122,8 @@ public class Hra extends JPanel {
         boolean bool=false;
         @Override
         public void actionPerformed(ActionEvent e) {
+            Hrac h1=new Hrac('X');
+            Hrac h2=new Hrac('O');
             if(e.getSource()==newG){
                 plocha.reset();
                 list.clear();
@@ -141,13 +144,8 @@ public class Hra extends JPanel {
                                 policko[k].setIcon(new ImageIcon(img));
                             } catch (IOException ie) {
                             }
-                        } else if (i == 2 && j == 4 || i == 3 && j == 5 || i == 4 && j == 2 || i == 5 && j == 3) {
-                            try {
-                                Image img = ImageIO.read(getClass().getResource("obrazky/legal.png"));
-                                policko[k].setIcon(new ImageIcon(img));
-                            } catch (IOException ie) {
-                            }
                         }
+
                         k++;
                     }
                 }
@@ -156,8 +154,8 @@ public class Hra extends JPanel {
                 score1.setText(" Player1: "+player1+" ");
                 score2.setText(" Player2: "+player2+" ");
             }else{
-                Hrac h1=new Hrac('X');
-                Hrac h2=new Hrac('O');
+
+                ArrayList<Integer> arrl;
                 for(int i=0;i<64;i++){
                     if(e.getSource()==policko[i]){
                         int cX,cY;
@@ -170,7 +168,7 @@ public class Hra extends JPanel {
                             cY=i%8;
                             cX=i/8;
                         }
-                        ct= plocha.tah1(cX,cY);
+                            ct=plocha.tah1(cX, cY);
                         if(ct==0) {
                             list.add(new Plocha(plocha));
                             int k = 0;
@@ -192,14 +190,26 @@ public class Hra extends JPanel {
                                     k++;
                                 }
                             }
-                            
+                             arrl = new ArrayList<>();
+                            plocha.findMove(arrl, h2, h1);
+                            release();
+                            for (int j = 0; j < arrl.size(); j += 2) {
+                                try {
+                                    Image img = ImageIO.read(getClass().getResource("obrazky/legal.png"));
+                                    policko[arrl.get(j) * row + arrl.get(j + 1)].setIcon(new ImageIcon(img));
+                                } catch (IOException ioException) {
+                                }
+                            }
+
                             plocha.control(arr);
                             player1 = arr[0];
                             player2 = arr[1];
                             point = arr[2];
                             score1.setText("Player1: " + player1 + " ");
                             score2.setText("Player2: " + player2 + " ");
-                        }if(ct==-1){
+                        }
+                        ct=plocha.tah2(cX, cY);
+                        if(ct==2) {
                             list.add(new Plocha(plocha));
                             int k = 0;
                             for (int r = 0; r < row; r++) {
@@ -220,8 +230,9 @@ public class Hra extends JPanel {
                                     k++;
                                 }
                             }
-                            ArrayList<Integer> arrl = new ArrayList<>();
-                            plocha.findMove(arrl);
+                            arrl = new ArrayList<>();
+                            plocha.findMove(arrl, h1, h2);
+                            release();
                             for (int j = 0; j < arrl.size(); j += 2) {
                                 try {
                                     Image img = ImageIO.read(getClass().getResource("obrazky/legal.png"));
@@ -236,7 +247,6 @@ public class Hra extends JPanel {
                             score1.setText("Player1: " + player1 + " ");
                             score2.setText("Player2: " + player2 + " ");
                         }
-
                     }
                 }
                 int st=plocha.end();
@@ -260,6 +270,33 @@ public class Hra extends JPanel {
                 }
             }
         }
+        void release(){
+            int k=0;
+            for(int r=0;r<row;r++){
+                for(int j=0;j<col;j++){
+                    if (plocha.bunky[r][j].getCh() == 'X') {
+                        try {
+                            Image img = ImageIO.read(getClass().getResource("obrazky/dark.png"));
+                            policko[k].setIcon(new ImageIcon(img));
+                        } catch (IOException ie) {
+                        }
+                    } else if (plocha.bunky[r][j].getCh() == 'O') {
+                        try {
+                            Image img = ImageIO.read(getClass().getResource("obrazky/light.png"));
+                            policko[k].setIcon(new ImageIcon(img));
+                        } catch (IOException ie) {
+                        }
+                    }else if(plocha.bunky[r][j].getCh()=='.'){
+                        policko[k].setIcon(null);
+                    }
+                    k++;
+
+                }
+            }
+
+        }
     }
+
+
 
 }
